@@ -1,0 +1,244 @@
+syntax = "proto3";
+option go_package = "service-hf-orch-p5/orch-proto";
+
+message CreateClientRequest {
+  string name = 1;
+  string cpf = 2;
+  string email = 3;
+  string phoneNumber = 4;
+  string address = 5;
+}
+
+message CreateClientResponse {
+  string uuid = 1;
+  string name = 2;
+  string cpf = 3;
+  string email = 4;
+  string phoneNumber = 5;
+  string address = 6;
+  string createdAt = 7;
+}
+
+message GetClientByIDRequest { int64 id = 1; }
+
+message GetClientByIDResponse {
+  string uuid = 1;
+  string name = 2;
+  string cpf = 3;
+  string email = 4;
+  string phoneNumber = 5;
+  string address = 6;
+  string createdAt = 7;
+}
+
+message GetClientByCPFRequest { string cpf = 1; }
+
+message GetClientByCPFResponse {
+  string uuid = 1;
+  string name = 2;
+  string cpf = 3;
+  string email = 4;
+  string phoneNumber = 5;
+  string address = 6;
+  string createdAt = 7;
+}
+
+service Client {
+  rpc CreateClient(CreateClientRequest) returns (CreateClientResponse);
+  rpc GetClientByCPF(GetClientByCPFRequest) returns (GetClientByCPFResponse);
+}
+
+message CreateVoucherRequest {
+  string code = 1;
+  int64 percentage = 2;
+  string expiresAt = 3;
+}
+
+message CreateVoucherResponse {
+  string uuid = 1;
+  string code = 2;
+  int64 percentage = 3;
+  string createdAt = 4;
+  string expiresAt = 5;
+}
+
+message GetVoucherByIDRequest { string uuid = 1; }
+
+message GetVoucherByIDResponse {
+  string uuid = 1;
+  string code = 2;
+  int64 percentage = 3;
+  string createdAt = 4;
+  string ExpiresAt = 5;
+}
+
+message UpdateVoucherByIDRequest {
+  string uuid = 1;
+  string code = 2;
+  int64 percentage = 3;
+  string createdAt = 4;
+  string expiresAt = 5;
+}
+
+message UpdateVoucherByIDResponse {
+  string uuid = 1;
+  string code = 2;
+  int64 percentage = 3;
+  string createdAt = 4;
+  string expiresAt = 5;
+}
+
+service Voucher {
+  rpc CreateVoucher(CreateVoucherRequest) returns (CreateVoucherResponse);
+  rpc GetVoucherByID(GetVoucherByIDRequest) returns (GetVoucherByIDResponse);
+  rpc UpdateVoucherByID(UpdateVoucherByIDRequest)
+      returns (UpdateVoucherByIDResponse);
+}
+
+message Item {
+  string productUuid = 1;
+  int64 orderId = 2;
+  int64 quantity = 3;
+}
+
+message CreateOrderRequest {
+  string clientUuid = 1;
+  string voucherUuid = 2;
+  repeated Item items = 3;
+}
+
+message CreateOrderResponse {
+  int64 id = 1;
+  string clientUuid = 2;
+  string voucherUuid = 3;
+  repeated Item items = 4;
+  string status = 5;
+  string verificationCode = 6;
+  string createdAt = 7;
+}
+
+message GetOrderByIDRequest { int64 id = 1; }
+
+message GetOrderByIDResponse {
+  int64 id = 1;
+  string clientUuid = 2;
+  string voucherUuid = 3;
+  repeated Item items = 4;
+  string status = 5;
+  string verificationCode = 6;
+  string createdAt = 7;
+}
+
+message UpdateOrderRequest {
+  int64 id = 1;
+  string clientUuid = 2;
+  string voucherUuid = 3;
+  repeated Item items = 4;
+  string status = 5;
+  string verificationCode = 6;
+  string createdAt = 7;
+}
+
+message UpdateOrderResponse {
+  int64 id = 1;
+  string clientUuid = 2;
+  string voucherUuid = 3;
+  repeated Item items = 4;
+  string status = 5;
+  string verificationCode = 6;
+  string createdAt = 7;
+}
+
+message OrderItem {
+  int64 id = 1;
+  string clientUuid = 2;
+  string voucherUuid = 3;
+  repeated Item items = 4;
+  string status = 5;
+  string verificationCode = 6;
+  string createdAt = 7;
+}
+
+message GetOrderRequest {}
+
+message GetOrderResponse { repeated OrderItem orders = 1; }
+
+service Order {
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc GetOrderByID(GetOrderByIDRequest) returns (GetOrderByIDResponse);
+  rpc UpdateOrder(UpdateOrderRequest) returns (UpdateOrderResponse);
+  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
+}
+
+message CreateProductRequest {
+  string name = 1;
+  string category = 2;
+  string image = 3;
+  string description = 4;
+  float price = 5;
+  string createdAt = 6;
+  string deactivatedAt = 7;
+}
+
+message CreateProductResponse {
+  string uuid = 1;
+  string name = 2;
+  string category = 3;
+  string image = 4;
+  string description = 5;
+  float price = 6;
+  string createdAt = 7;
+  string deactivatedAt = 8;
+}
+
+message GetProductByCategoryRequest { string category = 1; }
+
+message GetProductByCategoryItem {
+  string uuid = 1;
+  string name = 2;
+  string category = 3;
+  string image = 4;
+  string description = 5;
+  float price = 6;
+  string createdAt = 7;
+  string deactivatedAt = 8;
+}
+
+message GetProductByCategoryResponse {
+  repeated GetProductByCategoryItem items = 1;
+}
+
+message UpdateProductRequest {
+  string uuid = 1;
+  string name = 2;
+  string category = 3;
+  string image = 4;
+  string description = 5;
+  float price = 6;
+  string createdAt = 7;
+  string deactivatedAt = 8;
+}
+
+message UpdateProductResponse {
+  string uuid = 1;
+  string name = 2;
+  string category = 3;
+  string image = 4;
+  string description = 5;
+  float price = 6;
+  string createdAt = 7;
+  string deactivatedAt = 8;
+}
+
+message DeleteProductByUUIDRequest { string uuid = 1; }
+
+message DeleteProductByUUIDResponse { string message = 1; }
+
+service Product {
+  rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse);
+  rpc GetProductByCategory(GetProductByCategoryRequest)
+      returns (GetProductByCategoryResponse);
+  rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse);
+  rpc DeleteProductByUUID(DeleteProductByUUIDRequest)
+      returns (DeleteProductByUUIDResponse);
+}
